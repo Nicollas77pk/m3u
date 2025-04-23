@@ -3,15 +3,17 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
 
-// Proxy simples para link m3u8 original
+// Proxy para qualquer link do servidor HTTP
 app.use('/proxy', createProxyMiddleware({
-  target: 'http://lexus.hubns.top:80', // você pode alterar aqui
+  target: 'http://lexus.hubns.top', // <- Altere aqui para o host que você quiser
   changeOrigin: true,
   pathRewrite: {
-    '^/proxy': '', // remove /proxy da URL
+    '^/proxy': '', // remove "/proxy" do início da URL
   },
 }));
 
-app.listen(3000, () => {
-  console.log('Proxy rodando na porta 3000');
+// A porta é definida pela variável de ambiente no Render
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor proxy rodando na porta ${PORT}`);
 });
